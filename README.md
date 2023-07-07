@@ -1,13 +1,15 @@
-# A file organizer to organize files based on file type written in Python3 
+# File Organizer: Organize Your Files Based on File Type
 
-This is a file organizer that organizes all the files in the PWD (present working directory) based on their file types by putting them in their respective types' folders.
+This Python3 script serves as a file organizer, allowing you to conveniently organize all the files in your present working directory (PWD) based on their file types. It automatically sorts the files into their respective type-specific folders.
 
-How to use?
-1. Run ./main.py
+## Usage
+1. Execute the `main.py` file in your preferred Python environment.
 
-What's missing?
-- Support for more file types (currently supports only .txt, .png, .jpg, .pdf, .docx, & .xlsx).
+## Features
 
-TODOs:
-- Add verbose output.
+- **File Organization**: The script automatically organizes files in your PWD based on their file types.
+- **Supported File Types**: Currently, the script supports the following file types: `.txt`, `.png`, `.jpg`, `.pdf`, `.docx`, and `.xlsx`.
+
+## TODOs
+- **Verbose Output**: Implement verbose output functionality to provide more detailed information during the file organization process.
 
