@@ -1,3 +1,3 @@
-module github.com/rrgmon/file-organizer
+module github.com/rrgmon/sortzilla
 
 go 1.20
