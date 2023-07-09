@@ -1,2 +1,3 @@
-test_folder/
-*.exe
+test_folder
+sortzilla*
+build.sh
