@@ -1,14 +1,18 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-func organizeFiles(targetFolder string) {
+var targetFolder string
+
+func organizeFiles() error {
 	extensions := map[string]string{
 		".jpg":  "Images",
 		".png":  "Images",
@@ -20,8 +24,7 @@ func organizeFiles(targetFolder string) {
 
 	files, err := ioutil.ReadDir(targetFolder)
 	if err != nil {
-		fmt.Println("Error reading target folder:", err)
-		return
+		return fmt.Errorf("error reading target folder: %v", err)
 	}
 
 	for _, file := range files {
@@ -41,30 +44,50 @@ func organizeFiles(targetFolder string) {
 		destinationFolder := filepath.Join(targetFolder, folderName)
 		err := os.MkdirAll(destinationFolder, os.ModePerm)
 		if err != nil {
-			fmt.Println("Error creating destination folder:", err)
+			log.Printf("error creating destination folder: %v", err)
 			continue
 		}
 
-		err = os.Rename(filePath, filepath.Join(destinationFolder, filename))
+		destinationPath := filepath.Join(destinationFolder, filename)
+		if _, err := os.Stat(destinationPath); err == nil {
+			// Handle file name conflicts
+			newFilename := fmt.Sprintf(
+				"%s_%d%s",
+				strings.TrimSuffix(filename, extension),
+				file.ModTime().Unix(),
+				extension,
+			)
+			destinationPath = filepath.Join(destinationFolder, newFilename)
+		}
+
+		err = os.Rename(filePath, destinationPath)
 		if err != nil {
-			fmt.Println("Error moving file:", err)
+			log.Printf("error moving file: %v", err)
 			continue
 		}
 	}
 
-	fmt.Println("Files organized successfully")
+	return nil
+}
+
+func init() {
+	flag.StringVar(&targetFolder, "target", "", "Target folder path")
+	flag.Parse()
 }
 
 func main() {
-	var targetFolder string
-	fmt.Print("Enter the target folder path: ")
-	fmt.Scanln(&targetFolder)
-
-	fileInfo, err := os.Stat(targetFolder)
-	if err != nil || !fileInfo.IsDir() {
-		fmt.Println("Invalid folder path.")
-		return
+	if targetFolder == "" {
+		wd, err := os.Getwd()
+		if err != nil {
+			log.Fatalf("error getting the current working directory: %v", err)
+		}
+		targetFolder = wd
 	}
 
-	organizeFiles(targetFolder)
+	err := organizeFiles()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Files organized successfully")
 }
