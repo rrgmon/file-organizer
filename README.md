@@ -17,4 +17,8 @@ Sortzilla is a fun and powerful command-line tool written in Go that brings orde
 - **Verbose Output**: Implement verbose output functionality to provide more detailed information during the file organization process.
 - **Custom File Types**: Allow users to define and specify their own custom file types for sorting.
 
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
 Unleash Sortzilla's power and conquer the chaos of your files. Embrace the efficiency and enjoy the command-line journey of file organization with Sortzilla!
